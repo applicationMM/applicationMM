@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Payment Form</h2>
+    <form id="paymentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" pattern="[A-Za-z\s]+" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" pattern="\d{10}" required>
+
+        <label for="aadhar">Aadhar Card Number:</label>
+        <input type="text" id="aadhar" name="aadhar" pattern="\d{11}" required>
+
+        <button type="submit">Apply Now</button>
+    </form>
+</div>
+
+<div id="qrCodePopup" class="hidden">
+    <h3>Scan QR Code to Pay ₹1</h3>
+    <img id="qrCode" src="" alt="QR Code">
+    <p id="upiId" style="display:none;">BHARATPE09917269232@yesbankltd</p>
+</div>
+
+<div id="successPage" class="hidden">
+    <h2>Payment Success</h2>
+    <p>Thank you for your payment!</p>
+    <button onclick="closeSuccessPage()">Close</button>
+</div>
+
+<script>
+    document.getElementById('paymentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.querySelector('.container').classList.add('hidden');
+        document.getElementById('qrCodePopup').classList.remove('hidden');
+
+        var upiId = document.getElementById('upiId').innerText;
+        var qrUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=' + encodeURIComponent('upi://pay?pa=' + upiId + '&pn=Test%20Merchant&am=1&cu=INR');
+        document.getElementById('qrCode').src = qrUrl;
+    });
+
+    function closeSuccessPage() {
+        document.getElementById('successPage').classList.add('hidden');
+        document.querySelector('.container').classList.remove('hidden');
+    }
+</script>
+</body>
+</html>
